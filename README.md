@@ -22,5 +22,5 @@
 
 # Conclusion
 
-![alt text](overview.png);
-![alt text](overview_2.png);
+![alt text](overview.PNG);
+![alt text](overview_2.PNG);
