@@ -34,7 +34,7 @@ const data = [
 /**
  * Function will loop via data and add category property to each
  * item in array depending on keyword in description
- * @param {testDataOne} - array of test objects
+ * @param {data} - array of test objects
  * @returns {result} array of categorized objects
  **/
 
@@ -65,35 +65,42 @@ function categorizeIncByDescription(data) {
     app: "Application Issues",
   };
 
-  // caching length of incoming data
-  const len = data.length;
-  // choosing ugly for loop for better performance since we expecting N number of inputs
-  for (let i = 0; i < len; i++) {
-    // creating array from description and lowercasing words for later comparison
-    const descriptionArr = data[i].description.toLowerCase().split(" ");
+  try {
+    // caching length of incoming data
+    const len = data.length;
+    // choosing ugly for loop for better performance since we expecting N number of inputs
+    for (let i = 0; i < len; i++) {
+      // creating array from description and lowercasing words for later comparison
+      const descriptionArr = data[i].description.toLowerCase().split(" ");
 
-    // checking if some word is matching our key in cateogryMap object
-    // if yes pushing object otherwise exiting early
-    // storing boolean flag into variable keyFound whether word was found
-    const keyFound = descriptionArr.some((word) => {
-      return (
-        // taking advantage of hashed object and searching in constant O(1)
-        categoryMap.hasOwnProperty(word) &&
+      // checking if some word is matching our key in cateogryMap object
+      // if yes pushing object otherwise exiting early
+      // storing boolean flag into variable keyFound whether word was found
+      const keyFound = descriptionArr.some((word) => {
+        return (
+          // taking advantage of hashed object and searching in constant O(1)
+          categoryMap.hasOwnProperty(word) &&
+          result.push({
+            ...data[i],
+            category: categoryMap[word],
+          })
+        );
+      });
+      // if key was not found we are adding object with General cateogry into result array
+      if (!keyFound) {
         result.push({
           ...data[i],
-          category: categoryMap[word],
-        })
-      );
-    });
-    // if key was not found we are adding object with General cateogry into result array
-    if (!keyFound) {
-      result.push({
-        ...data[i],
-        category: "General",
-      });
+          category: "General",
+        });
+      }
     }
+    return result;
+  } catch (error) {
+    return {
+      function: "categorizeIncByDescription",
+      error: error,
+    };
   }
-  return result;
 }
 
 const result = categorizeIncByDescription(data);
