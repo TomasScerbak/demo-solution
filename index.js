@@ -39,6 +39,10 @@ const data = [
  **/
 
 function categorizeIncByDescription(data) {
+  if (!data) {
+    return;
+  }
+
   const result = [];
 
   // const map = {
